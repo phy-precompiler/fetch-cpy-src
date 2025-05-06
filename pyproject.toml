@@ -1,0 +1,57 @@
+[project]
+name = "phy-cpydeps-update"
+version = "0.1.0"
+description = "Download & update `phy` project dependencies from `cpython` source repository."
+authors = [
+    {name = "Alfred DU",email = "ihearmywords@hotmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests (>=2.32.3,<3.0.0)",
+    "pygithub (>=2.6.1,<3.0.0)"
+]
+
+
+[tool.poetry]
+packages = [{include = "phy_cpydeps_update", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+
+[tool.pytest.ini_options]
+norecursedirs = ["tmp", ]
+pythonpath = "src"
+testpaths = "tests"
+
+
+[tool.pylint]
+ignore = ["tmp", ]
+disable = [
+    "raw-checker-failed",
+    "bad-inline-option",
+    "locally-disabled",
+    "file-ignored",
+    "suppressed-message",
+    "useless-suppression",
+    "deprecated-pragma",
+    "use-implicit-booleaness-not-comparison-to-string",
+    "use-implicit-booleaness-not-comparison-to-zero",
+    "use-symbolic-message-instead",
+    "use-dict-literal",
+    "unnecessary-pass",
+    "trailing-whitespace",
+    "invalid-name",
+    "consider-using-f-string",
+    "too-many-locals",
+    "too-many-branches",
+    "too-many-statements",
+    "too-many-nested-blocks",
+    "too-few-public-methods",
+    "line-too-long",
+]
