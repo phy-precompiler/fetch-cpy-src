@@ -11,7 +11,7 @@ CPYTHON_REPO_OWNER = 'python'
 CPYTHON_REPO_NAME = 'cpython'
 
 
-def _get_github_repo(access_token: str = None) -> Github:
+def _get_cpython_repo(access_token: str = None) -> Github:
     """ shared github repository access object """
     gh = Github(access_token) if access_token else Github()
     return gh.get_repo(f'{CPYTHON_REPO_OWNER}/{CPYTHON_REPO_NAME}')
@@ -51,7 +51,7 @@ def _download_cpython_dir(repo: Repository, path: str, tag: str, target_dir: Pat
     for _sub_content in dir_content:
         if _sub_content.type == 'dir':
             _download_cpython_dir(repo, _sub_content.path, tag, target_dir)
-            
+
         else:  #  _sub_content.type == 'file'
             _download_cpython_file(repo, _sub_content.path, tag, target_dir)
 

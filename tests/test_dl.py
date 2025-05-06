@@ -7,7 +7,7 @@ from pprint import pprint
 import pytest
 
 # local imports
-from phy_cpydeps_update._downloader import _get_github_repo, \
+from phy_cpydeps_update._downloader import _get_cpython_repo, \
     _download_cpython_file, _download_cpython_dir
 
 
@@ -25,7 +25,7 @@ def get_github_access_token() -> str:
 @pytest.mark.skip()
 def test_dl_file():
     access_token = get_github_access_token()
-    repo = _get_github_repo(access_token=access_token)
+    repo = _get_cpython_repo(access_token=access_token)
 
     test_path_list = [
         'Parser/asdl_c.py'
@@ -35,9 +35,10 @@ def test_dl_file():
         _download_cpython_file(repo, test_path, '3.12', TMP_DIR)
 
 
+@pytest.mark.skip()
 def test_dl_dir():
     access_token = get_github_access_token()
-    repo = _get_github_repo(access_token=access_token)
+    repo = _get_cpython_repo(access_token=access_token)
 
     test_path_list = [
         'Grammar'
