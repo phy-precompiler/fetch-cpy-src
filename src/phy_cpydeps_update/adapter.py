@@ -108,10 +108,20 @@ class ModAbsImportAdapter(Adapter, builtin_ast.NodeVisitor):
                 # import node always occupy the entire line, no need to involving the end offset.
                 code_lines[start_line] = new_code
 
+                # this may be vary rare cases: import statements are semicolon (;) separated, which may
+                # case unexpected effect. I DO NOT WANT to handle this edge cases, just raise exception
+                if ';' in code_lines[start_line]:
+                    raise ValueError(f'Semicolon found in import line {code_lines[start_line]}')
+
             else:  # multi line
                 # try not to affect other lines by appending empty lines of the same number
                 ln_count = end_line + 1 - start_line
                 code_lines[start_line: end_line + 1] = [new_code] + [''] * (ln_count - 1)
+
+                # very rare cases which I DO NOT WANT to handle
+                for _code_ln in code_lines[start_line: end_line + 1]:
+                    if ';' in _code_ln:
+                        raise ValueError(f'Semicolon found in import line {_code_ln}')
 
         # write adapted code
         if in_place:
@@ -262,10 +272,20 @@ class TopLevelScriptImportAdapter(Adapter, builtin_ast.NodeVisitor):
                 # the offset
                 code_lines[start_line] = new_code
 
+                # this may be vary rare cases: import statements are semicolon (;) separated, which may
+                # case unexpected effect. I DO NOT WANT to handle this edge cases, just raise exception
+                if ';' in code_lines[start_line]:
+                    raise ValueError(f'Semicolon found in import line {code_lines[start_line]}')
+
             else:  # multi line
                 # try not to affect other lines by appending empty lines of the same number
                 ln_count = end_line + 1 - start_line
                 code_lines[start_line: end_line + 1] = [new_code] + [''] * (ln_count - 1)
+
+                # very rare cases which I DO NOT WANT to handle
+                for _code_ln in code_lines[start_line: end_line + 1]:
+                    if ';' in _code_ln:
+                        raise ValueError(f'Semicolon found in import line {_code_ln}')
 
         # write adapted code
         if in_place:
