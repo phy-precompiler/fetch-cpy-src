@@ -7,7 +7,7 @@ from pprint import pprint
 import pytest
 
 # local imports
-from phy_cpydeps_update._downloader import _get_cpython_repo, \
+from phy_cpydeps_update.downloader import _get_cpython_repo, \
     _download_cpython_file, _download_cpython_dir
 
 

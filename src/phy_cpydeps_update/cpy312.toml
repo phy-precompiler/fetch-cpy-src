@@ -31,3 +31,8 @@ dir_adapters = ['AddDunderInitAdapter']
 [[items]]
 path = 'Parser/Python.asdl'
 type = 'file'
+
+
+[[items]]
+path = 'Parser/action_helpers.c'
+type = 'file'
