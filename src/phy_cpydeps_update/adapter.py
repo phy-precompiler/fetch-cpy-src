@@ -23,18 +23,22 @@ class Adapter(ABC):
         raise NotImplementedError
 
 
-class AbsoluteImportFromAdapter(Adapter, builtin_ast.NodeVisitor):
-    """ Change absolute "from ... import ..." statements of given module name to relative import. """
+class ModAbsImportAdapter(Adapter, builtin_ast.NodeVisitor):
+    """ The module that copied to `phy` project should to adapted to relative imports, which 
+    ensure this module can be imported by `phy` components correctly. 
+    
+    Only flat structured module (non-nested one) is supported.
+    """
 
     # instance attributes
-    match_mod: str
+    match_mod_name: str
     _abs_from_import_nodes: List[builtin_ast.ImportFrom]
 
-    def __init__(self, match_mod_name: str):
+    def __init__(self):
         """ constructor """
         super().__init__()
 
-        self.match_mod = match_mod_name
+        self.match_mod_name = None
         self._abs_from_import_nodes = []
 
     def visit_ImportFrom(self, node: builtin_ast.ImportFrom):
@@ -45,7 +49,7 @@ class AbsoluteImportFromAdapter(Adapter, builtin_ast.NodeVisitor):
         # 
         # DO NOT filter by `.startswith(match_mod)`, for the module name may be 
         # coincidentally other string prefixed with `match_mod`
-        if node.level == 0 and node.module and node.module.split('.')[0] == self.match_mod:
+        if node.level == 0 and node.module and node.module.split('.')[0] == self.match_mod_name:
             self._abs_from_import_nodes.append(node)
 
         self.generic_visit(node)
@@ -57,6 +61,9 @@ class AbsoluteImportFromAdapter(Adapter, builtin_ast.NodeVisitor):
         path of `dst file`. 
         """
         assert src.suffix == '.py'
+
+        # get match module names
+        self.match_mod_name = src.parent.stem
 
         # clean
         self._abs_from_import_nodes = []
@@ -76,7 +83,7 @@ class AbsoluteImportFromAdapter(Adapter, builtin_ast.NodeVisitor):
 
         for node in self._abs_from_import_nodes:
             # transfer "from <match_mod> import xxx" to "from . import xxx"
-            if node.module == self.match_mod:
+            if node.module == self.match_mod_name:
                 node.module = None
 
             # transfer "from <match_mod>.yyy import xxx" to "from .yyy import xxx"
@@ -268,9 +275,17 @@ class TopLevelScriptImportAdapter(Adapter, builtin_ast.NodeVisitor):
         return dst
 
 
-class PegenImportAdapter(AbsoluteImportFromAdapter):
-    """ adapt absolute imports of "Tools/peg_generator/pegen/" module """
+class AddDunderInitAdapter(Adapter):
+    """ add an empty "__init__.py" to directory to make it a package """
 
-    def __init__(self):
-        """ constructor """
-        super().__init__(match_mod_name='pegen')
+    def adapt(self, src: Path, in_place: bool = True, dst: Path = None) -> Optional[Path]:
+        # validate
+        assert src.is_dir() and not (src / '__init__.py').exists()
+        
+        # write adapted code
+        if in_place:
+            dst = src
+
+        dst.mkdir(parents=True, exist_ok=True)
+        dst_file = (dst / '__init__.py').resolve()
+        dst_file.touch(exist_ok=True)
