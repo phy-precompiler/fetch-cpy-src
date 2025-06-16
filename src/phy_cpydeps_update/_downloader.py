@@ -11,7 +11,7 @@ CPYTHON_REPO_OWNER = 'python'
 CPYTHON_REPO_NAME = 'cpython'
 
 
-def _get_cpython_repo(access_token: str = None) -> Github:
+def _get_cpython_repo(access_token: str = None) -> Repository:
     """ shared github repository access object """
     gh = Github(access_token) if access_token else Github()
     return gh.get_repo(f'{CPYTHON_REPO_OWNER}/{CPYTHON_REPO_NAME}')

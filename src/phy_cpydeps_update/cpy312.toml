@@ -1,0 +1,33 @@
+# `phy` project dependencies for cpython 3.12
+tag = "3.12"
+
+
+[[items]]
+path = 'Grammar/'
+type = 'dir'
+
+
+[[items]]
+path = 'Tools/peg_generator/pegen/'
+type = 'dir'
+adapters = ['AbsoluteFromImportAdapter']
+dir_adapters = ['AddDunderInitAdapter']
+
+
+[[items]]
+path = 'Parser/asdl_c.py'
+type = 'file'
+adapters = ['AbsoluteFromImportAdapter']
+dir_adapters = ['AddDunderInitAdapter']
+
+
+[[items]]
+path = 'Parser/asdl.py'
+type = 'file'
+adapters = ['AbsoluteFromImportAdapter']
+dir_adapters = ['AddDunderInitAdapter']
+
+
+[[items]]
+path = 'Parser/Python.asdl'
+type = 'file'

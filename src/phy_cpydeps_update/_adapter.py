@@ -1,16 +1,29 @@
 """ Make adaption to downloaded files. 
 
 The adaption should be as small as possible. Typically only absolute import 
-statements should be adapted (to relative import and thus be importable).
+statements should be adapted (to relative import and thus be importable). 
+
+Although PEP-8 recommends that developer should use absolute imports as possible as 
+one can, but the `_cpython` module of `phy` is purely internal used sub-module, which 
+is much more sutible for relative imports.
 """
 # imports
 from pathlib import Path
 import ast as builtin_ast
-from typing import List
+from abc import ABC, abstractmethod
+from typing import List, Optional
 
 
+class Adapter(ABC):
+    """ base class of adapter """
 
-class AbsFromImportAdapter(builtin_ast.NodeVisitor):
+    @abstractmethod
+    def adapt(self, src: Path, in_place: bool = True, dst: Path = None) -> Optional[Path]:
+        """ protocol abstract method """
+        raise NotImplementedError
+
+
+class AbsoluteFromImportAdapter(Adapter, builtin_ast.NodeVisitor):
     """ Change absolute import-from statements of given module name 
     to relative import. """
 
@@ -36,19 +49,19 @@ class AbsFromImportAdapter(builtin_ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def adapt(self, src_file: Path, in_place: bool = True, dst_file: Path = None):
+    def adapt(self, src: Path, in_place: bool = True, dst: Path = None) -> Optional[Path]:
         """ Adapt source file.
 
         If `inplace=True`, the source file would be overwritten; or saved to another 
         path of `dst file`. 
         """
-        assert src_file.suffix == '.py'
+        assert src.suffix == '.py'
 
         # Parse code to ast node; the source file downloaded from cpython repository is 
         # guaranteed to be 'utf-8' encoding.
-        with src_file.open('r', encoding='utf8') as _f:
+        with src.open('r', encoding='utf8') as _f:
             src_code = _f.read()
-            ast_root = builtin_ast.parse(src_code, filename=str(src_file))
+            ast_root = builtin_ast.parse(src_code, filename=str(src))
         
         # visit nodes and extract absolute imports with given name
         self.visit(ast_root)
@@ -61,7 +74,7 @@ class AbsFromImportAdapter(builtin_ast.NodeVisitor):
                 node.module = None
             else:
                 node.module = '.'.join(node.module.split('.')[1:])
-                print('*******************', node.module)
+                print('Visted `ImportForm` ast which is of module: ', node.module)
 
             node.level = 1
 
@@ -85,11 +98,13 @@ class AbsFromImportAdapter(builtin_ast.NodeVisitor):
 
         # write adapted code
         if in_place:
-            dst_file = src_file
+            dst = src
 
-        assert dst_file is not None
-        with dst_file.open('w', encoding='utf8') as _f:
+        assert dst is not None
+        with dst.open('w', encoding='utf8') as _f:
             _f.writelines([
                 line + '\n' if not line.endswith('\n') else line 
                 for line in code_lines
             ])
+
+        return dst

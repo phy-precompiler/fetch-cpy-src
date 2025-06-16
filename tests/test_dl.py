@@ -22,7 +22,7 @@ def get_github_access_token() -> str:
         return _f.read()
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_dl_file():
     access_token = get_github_access_token()
     repo = _get_cpython_repo(access_token=access_token)
@@ -35,7 +35,7 @@ def test_dl_file():
         _download_cpython_file(repo, test_path, '3.12', TMP_DIR)
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_dl_dir():
     access_token = get_github_access_token()
     repo = _get_cpython_repo(access_token=access_token)
