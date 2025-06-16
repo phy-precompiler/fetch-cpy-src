@@ -22,6 +22,11 @@ class ManifestItem:
     dir_adapters: List[adapter.Adapter]  # chain of adapters for file
 
 
+def _inst_adapter(subcls_name: str) -> adapter.Adapter:
+    """ instantiante a subclass of `Adapter` by its name """
+    return getattr(adapter, subcls_name)()
+
+
 class Manifest:
     """ manifest of files & directories of cpython repo to be downloaded & adapted """
 
@@ -60,15 +65,16 @@ class Manifest:
             item = ManifestItem(
                 path=_item_dict['path'],
                 type=_item_dict['type'],
-                adapters=[getattr(adapter, _adapter_name)() for 
-                          _adapter_name in _item_dict.get('adapter', list())],
-                dir_adapters=[getattr(adapter, _adapter_name)() for 
+                adapters=[_inst_adapter(_adapter_name) for 
+                          _adapter_name in _item_dict.get('adapters', list())],
+                dir_adapters=[_inst_adapter(_adapter_name) for 
                               _adapter_name in _item_dict.get('dir_adapters', list())],
             )
             items.append(item)
 
         # read env for access token
-        github_access_token = os.getenv('github_access_token', None)
+        # github_access_token = os.getenv('github_access_token', None)
+        github_access_token = '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'
 
         return cls(
             tag=toml_dict['tag'],
@@ -82,24 +88,39 @@ class Manifest:
         """ perform downloading & adaption, return proceeded files' path """
         updated_list: List[Path] = []
 
-        # iterate over items
+        # DO NOT merge downloading & adapting loop! For some adatption need work correctly when related 
+        # downloading completed (like top-level-script adaption). Besides, the developer can test adaption
+        # alone without downloadnig.
+
+        # download
+        for _item in self.items:
+            # for file
+            if _item.type == 'file':
+                _download_cpython_file(self._cpy_repo, _item.path, self.tag, self.work_dir)
+
+            elif _item.type == 'dir':
+                _download_cpython_dir(self._cpy_repo, _item.path, self.tag, self.work_dir)
+
+        # adaption
         for _item in self.items:
 
             # for file
             if _item.type == 'file':
-                target_file = _download_cpython_file(self._cpy_repo, _item.path, self.tag, self.work_dir)
+                target_file = (self.work_dir / _item.path).resolve()
                 target_dir = target_file.parent
 
                 for _dir_adapter in _item.dir_adapters:
                     _dir_adapter.adapt(target_dir, in_place=True, dst=target_dir)
 
                 for _adapter in _item.adapters:
+                    print(f'Perform adapter {_adapter.__class__.__name__} to {target_file}')
+
                     _adapter.adapt(target_file, in_place=True, dst=target_file)
                     updated_list.append(target_file)
 
             # for directory
             elif _item.type == 'dir':
-                target_dir = _download_cpython_dir(self._cpy_repo, _item.path, self.tag, self.work_dir)
+                target_dir = (self.work_dir / _item.path).resolve()
                 
                 for _dir_adapter in _item.dir_adapters:
                     _dir_adapter.adapt(target_dir, in_place=True, dst=target_dir)

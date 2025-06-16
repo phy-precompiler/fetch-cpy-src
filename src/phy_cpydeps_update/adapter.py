@@ -60,7 +60,8 @@ class ModAbsImportAdapter(Adapter, builtin_ast.NodeVisitor):
         If `inplace=True`, the source file would be overwritten; or saved to another 
         path of `dst file`. 
         """
-        assert src.suffix == '.py'
+        if src.suffix != '.py':
+            return None
 
         # get match module names
         self.match_mod_name = src.parent.stem
@@ -131,7 +132,11 @@ class TopLevelScriptImportAdapter(Adapter, builtin_ast.NodeVisitor):
     via absolute import. 
     
     To adapt such script to be usable in `phy` project, firstly make the script folder a module by
-    adding `__init__.py` file, and then change the absolute import statements to relative ones. """
+    adding `__init__.py` file, and then change the absolute import statements to relative ones. 
+    
+    BE CAREFUL!!! This adapter should be performed after all sibling scripts downloaded, in order to 
+    get all importable symbols.
+    """
 
     # instance attributes
     _importable_names: List[str]
