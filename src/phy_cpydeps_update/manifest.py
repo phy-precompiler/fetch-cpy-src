@@ -68,13 +68,13 @@ class Manifest:
             items.append(item)
 
         # read env for access token
-        # github_access_token = os.getenv('github_access_token', None)
+        github_access_token = os.getenv('github_access_token', None)
 
         return cls(
             tag=toml_dict['tag'],
             items=items,
             work_dir=work_dir,
-            github_access_token='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'
+            github_access_token=github_access_token
         )
 
 
