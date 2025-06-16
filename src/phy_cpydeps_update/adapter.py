@@ -99,13 +99,13 @@ class ModAbsImportAdapter(Adapter, builtin_ast.NodeVisitor):
             start_line = node.lineno - 1
             end_line = getattr(node, 'end_lineno', node.lineno) - 1
 
-            # adapted code for this node
-            new_code = builtin_ast.unparse(trans_node)
+            # Adapted code for this node; import node can be within indent block, so start offset 
+            # should be inherited.
+            new_code = ' ' * node.col_offset + builtin_ast.unparse(trans_node)
 
             # replace only the extracted nodes
             if start_line == end_line:  # single line
-                # import node always occupy the entire line, no need to involving
-                # the offset
+                # import node always occupy the entire line, no need to involving the end offset.
                 code_lines[start_line] = new_code
 
             else:  # multi line
@@ -252,8 +252,9 @@ class TopLevelScriptImportAdapter(Adapter, builtin_ast.NodeVisitor):
             start_line = node.lineno - 1
             end_line = getattr(node, 'end_lineno', node.lineno) - 1
 
-            # adapted code for this node
-            new_code = builtin_ast.unparse(trans_node)
+            # Adapted code for this node; import node can be within indent block, so start offset 
+            # should be inherited.
+            new_code = ' ' * node.col_offset + builtin_ast.unparse(trans_node)
 
             # replace only the extracted nodes
             if start_line == end_line:  # single line
