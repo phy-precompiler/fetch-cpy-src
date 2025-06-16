@@ -8,7 +8,7 @@ from github import Repository
 
 # local imports
 from phy_cpydeps_update.downloader import _get_cpython_repo, _download_cpython_file, _download_cpython_dir
-from phy_cpydeps_update.adapter import Adapter, AbsoluteImportAdapter
+from phy_cpydeps_update.adapter import Adapter, AbsoluteImportFromAdapter
 
 
 @dataclass
