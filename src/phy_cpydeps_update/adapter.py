@@ -280,7 +280,7 @@ class AddDunderInitAdapter(Adapter):
 
     def adapt(self, src: Path, in_place: bool = True, dst: Path = None) -> Optional[Path]:
         # validate
-        assert src.is_dir() and not (src / '__init__.py').exists()
+        assert src.is_dir()
         
         # write adapted code
         if in_place:

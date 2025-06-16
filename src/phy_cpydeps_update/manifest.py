@@ -3,12 +3,14 @@
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TypedDict, Literal, List, ClassVar
+from typing import Literal, List
+
+import tomli  # builtin `tomlib` is available until 3.11
 from github import Repository
 
 # local imports
 from phy_cpydeps_update.downloader import _get_cpython_repo, _download_cpython_file, _download_cpython_dir
-from phy_cpydeps_update.adapter import Adapter, ModAbsImportAdapter
+from phy_cpydeps_update import adapter
 
 
 @dataclass
@@ -16,8 +18,8 @@ class ManifestItem:
     """ item of the manifest """
     path: str
     type: Literal['file', 'dir']
-    adapters: List[Adapter] = []  # chain of adapters for file
-    dir_adapters: List[Adapter] = []  # chain of adapters for file
+    adapters: List[adapter.Adapter]  # chain of adapters for file
+    dir_adapters: List[adapter.Adapter]  # chain of adapters for file
 
 
 class Manifest:
@@ -44,6 +46,37 @@ class Manifest:
 
         # read `github_access_token` from env
         self._cpy_repo = _get_cpython_repo(access_token=github_access_token)
+
+    @classmethod
+    def load(cls, toml_file: Path, work_dir: Path = None) -> 'Manifest':
+        """ create manifest from toml """
+        # read toml file
+        toml_file = toml_file.resolve()
+        with toml_file.open('rb') as _f:
+            toml_dict = tomli.load(_f)
+
+        items = []
+        for _item_dict in toml_dict['items']:
+            item = ManifestItem(
+                path=_item_dict['path'],
+                type=_item_dict['type'],
+                adapters=[getattr(adapter, _adapter_name)() for 
+                          _adapter_name in _item_dict.get('adapter', list())],
+                dir_adapters=[getattr(adapter, _adapter_name)() for 
+                              _adapter_name in _item_dict.get('dir_adapters', list())],
+            )
+            items.append(item)
+
+        # read env for access token
+        # github_access_token = os.getenv('github_access_token', None)
+
+        return cls(
+            tag=toml_dict['tag'],
+            items=items,
+            work_dir=work_dir,
+            github_access_token='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'
+        )
+
 
     def update(self) -> List[Path]:
         """ perform downloading & adaption, return proceeded files' path """

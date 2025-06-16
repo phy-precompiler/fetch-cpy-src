@@ -9,11 +9,13 @@ import pytest
 # local imports
 from phy_cpydeps_update.adapter import ModAbsImportAdapter, \
     TopLevelScriptImportAdapter, AddDunderInitAdapter
+from phy_cpydeps_update.manifest import Manifest
 
 
 # constants
 TEST_DIR = Path(__file__).resolve().parent
 BASE_DIR = TEST_DIR.parent
+SRC_DIR = BASE_DIR / 'src'
 TMP_DIR = BASE_DIR / 'tmp'
 
 
@@ -39,3 +41,11 @@ def test_add_init_adapt():
     src_file = TMP_DIR / 'Parser/'
 
     adapter.adapt(src_file, in_place=True)
+
+
+@pytest.mark.skip()
+def test_manifest():
+    config_file = SRC_DIR / 'phy_cpydeps_update/cpy312.toml'
+    manifest = Manifest.load(config_file, work_dir=TMP_DIR)
+
+    manifest.update()
