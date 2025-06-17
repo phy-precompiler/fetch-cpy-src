@@ -11,6 +11,7 @@ from github import Repository
 # local imports
 from phy_cpydeps_update.downloader import _get_cpython_repo, _download_cpython_file, _download_cpython_dir
 from phy_cpydeps_update import adapter
+from phy_cpydeps_update.adapter import FileAdapter, DirAdapter, Adapter
 
 
 @dataclass
@@ -18,11 +19,11 @@ class ManifestItem:
     """ item of the manifest """
     path: str
     type: Literal['file', 'dir']
-    adapters: List[adapter.Adapter]  # chain of adapters for file
-    dir_adapters: List[adapter.Adapter]  # chain of adapters for file
+    adapters: List[FileAdapter]  # chain of adapters for file
+    dir_adapters: List[DirAdapter]  # chain of adapters for file
 
 
-def _inst_adapter(subcls_name: str) -> adapter.Adapter:
+def _inst_adapter(subcls_name: str) -> Adapter:
     """ instantiante a subclass of `Adapter` by its name """
     return getattr(adapter, subcls_name)()
 
@@ -73,7 +74,8 @@ class Manifest:
             items.append(item)
 
         # read env for access token
-        github_access_token = os.getenv('github_access_token', None)
+        # github_access_token = os.getenv('github_access_token', None)
+        github_access_token = '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'
 
         return cls(
             tag=toml_dict['tag'],
@@ -109,12 +111,12 @@ class Manifest:
                 target_dir = target_file.parent
 
                 for _dir_adapter in _item.dir_adapters:
-                    _dir_adapter.adapt(target_dir, in_place=True, dst=target_dir)
+                    _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
 
                 for _adapter in _item.adapters:
                     print(f'Perform adapter {_adapter.__class__.__name__} to {target_file}')
 
-                    _adapter.adapt(target_file, in_place=True, dst=target_file)
+                    _adapter.adapt(target_file, in_place=True, dst_file=target_file)
                     updated_list.append(target_file)
 
             # for directory
@@ -122,7 +124,7 @@ class Manifest:
                 target_dir = (self.work_dir / _item.path).resolve()
                 
                 for _dir_adapter in _item.dir_adapters:
-                    _dir_adapter.adapt(target_dir, in_place=True, dst=target_dir)
+                    _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
 
                 for _sub_dir, _folders, _files in os.walk(target_dir.resolve()):
                     _ = _folders
@@ -132,7 +134,7 @@ class Manifest:
                         target_file = sub_dir / _file_name
 
                         for _adapter in _item.adapters:
-                            _adapter.adapt(target_file, in_place=True, dst=target_file)
+                            _adapter.adapt(target_file, in_place=True, dst_file=target_file)
                             updated_list.append(target_file)
 
         return updated_list

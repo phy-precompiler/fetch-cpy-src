@@ -24,7 +24,7 @@ def test_mod_adapt():
     adapter = ModAbsImportAdapter()
     src_file = TMP_DIR / 'Tools/peg_generator/pegen/python_generator.py'
 
-    adapter.adapt(src_file, in_place=False, dst=TMP_DIR / 'python_generator_x.py')
+    adapter.adapt(src_file, in_place=False, dst_file=TMP_DIR / 'python_generator_x.py')
 
 
 @pytest.mark.skip()
@@ -32,7 +32,7 @@ def test_script_adapt():
     adapter = TopLevelScriptImportAdapter()
     src_file = TMP_DIR / 'Parser/asdl_c.py'
 
-    adapter.adapt(src_file, in_place=False, dst=TMP_DIR / 'asdl_c.py')
+    adapter.adapt(src_file, in_place=False, dst_file=TMP_DIR / 'asdl_c.py')
 
 
 @pytest.mark.skip()

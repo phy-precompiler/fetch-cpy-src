@@ -14,16 +14,28 @@ from abc import ABC, abstractmethod
 from typing import List, Optional, Union
 
 
-class Adapter(ABC):
-    """ base class of adapter """
+class FileAdapter(ABC):
+    """ base class of file adapter """
 
     @abstractmethod
-    def adapt(self, src: Path, in_place: bool = True, dst: Path = None) -> Optional[Path]:
-        """ protocol abstract method """
+    def adapt(self, src_file: Path, in_place: bool = True, dst_file: Path = None) -> Optional[Path]:
+        """ perform adaption to file """
         raise NotImplementedError
+    
+
+class DirAdapter(ABC):
+    """ base class of directory adapter """
+
+    @abstractmethod
+    def adapt(self, src_dir: Path, in_place: bool = True, dst_dir: Path = None) -> Optional[Path]:
+        """ perform adaption to directory """
+        raise NotImplementedError
+    
+
+Adapter = Union[FileAdapter, DirAdapter]
 
 
-class ModAbsImportAdapter(Adapter, builtin_ast.NodeVisitor):
+class ModAbsImportAdapter(FileAdapter, builtin_ast.NodeVisitor):
     """ The module that copied to `phy` project should to adapted to relative imports, which 
     ensure this module can be imported by `phy` components correctly. 
     
@@ -54,26 +66,26 @@ class ModAbsImportAdapter(Adapter, builtin_ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def adapt(self, src: Path, in_place: bool = True, dst: Path = None) -> Optional[Path]:
+    def adapt(self, src_file: Path, in_place: bool = True, dst_file: Path = None) -> Optional[Path]:
         """ Adapt source file.
 
         If `inplace=True`, the source file would be overwritten; or saved to another 
         path of `dst file`. 
         """
-        if src.suffix != '.py':
+        if src_file.suffix != '.py':
             return None
 
         # get match module names
-        self.match_mod_name = src.parent.stem
+        self.match_mod_name = src_file.parent.stem
 
         # clean
         self._abs_from_import_nodes = []
 
         # Parse code to ast node; the source file downloaded from cpython repository is 
         # guaranteed to be 'utf-8' encoding.
-        with src.open('r', encoding='utf8') as _f:
+        with src_file.open('r', encoding='utf8') as _f:
             src_code = _f.read()
-            ast_root = builtin_ast.parse(src_code, filename=str(src))
+            ast_root = builtin_ast.parse(src_code, filename=str(src_file))
         
         # visit nodes and extract absolute imports with given name
         self.visit(ast_root)
@@ -125,19 +137,19 @@ class ModAbsImportAdapter(Adapter, builtin_ast.NodeVisitor):
 
         # write adapted code
         if in_place:
-            dst = src
+            dst_file = src_file
 
-        assert dst is not None
-        with dst.open('w', encoding='utf8') as _f:
+        assert dst_file is not None
+        with dst_file.open('w', encoding='utf8') as _f:
             _f.writelines([
                 line + '\n' if not line.endswith('\n') else line 
                 for line in code_lines
             ])
 
-        return dst
+        return dst_file
 
 
-class TopLevelScriptImportAdapter(Adapter, builtin_ast.NodeVisitor):
+class TopLevelScriptImportAdapter(FileAdapter, builtin_ast.NodeVisitor):
     """ Some ".py" file does not belong to module, and it imports same level file module or package 
     via absolute import. 
     
@@ -186,16 +198,16 @@ class TopLevelScriptImportAdapter(Adapter, builtin_ast.NodeVisitor):
 
         self.generic_visit(node)
 
-    def adapt(self, src: Path, in_place: bool = True, dst: Path = None) -> Optional[Path]:
+    def adapt(self, src_file: Path, in_place: bool = True, dst_file: Path = None) -> Optional[Path]:
         """ Adapt source file.
 
         If `inplace=True`, the source file would be overwritten; or saved to another 
         path of `dst file`. 
         """
-        assert src.suffix == '.py'
+        assert src_file.suffix == '.py'
 
         # get importable names; skip checking whether folder is a package.
-        script_dir = src.parent.resolve()
+        script_dir = src_file.parent.resolve()
 
         # clean
         self._importable_names = []
@@ -206,9 +218,9 @@ class TopLevelScriptImportAdapter(Adapter, builtin_ast.NodeVisitor):
 
         # Parse code to ast node; the source file downloaded from cpython repository is 
         # guaranteed to be 'utf-8' encoding.
-        with src.open('r', encoding='utf8') as _f:
+        with src_file.open('r', encoding='utf8') as _f:
             src_code = _f.read()
-            ast_root = builtin_ast.parse(src_code, filename=str(src))
+            ast_root = builtin_ast.parse(src_code, filename=str(src_file))
         
         # visit nodes and extract absolute imports with given name
         self.visit(ast_root)
@@ -289,29 +301,29 @@ class TopLevelScriptImportAdapter(Adapter, builtin_ast.NodeVisitor):
 
         # write adapted code
         if in_place:
-            dst = src
+            dst_file = src_file
 
-        assert dst is not None
-        with dst.open('w', encoding='utf8') as _f:
+        assert dst_file is not None
+        with dst_file.open('w', encoding='utf8') as _f:
             _f.writelines([
                 line + '\n' if not line.endswith('\n') else line 
                 for line in code_lines
             ])
 
-        return dst
+        return dst_file
 
 
-class AddDunderInitAdapter(Adapter):
+class AddDunderInitAdapter(DirAdapter):
     """ add an empty "__init__.py" to directory to make it a package """
 
-    def adapt(self, src: Path, in_place: bool = True, dst: Path = None) -> Optional[Path]:
+    def adapt(self, src_dir: Path, in_place: bool = True, dst_dir: Path = None) -> Optional[Path]:
         # validate
-        assert src.is_dir()
+        assert src_dir.is_dir()
         
         # write adapted code
         if in_place:
-            dst = src
+            dst_dir = src_dir
 
-        dst.mkdir(parents=True, exist_ok=True)
-        dst_file = (dst / '__init__.py').resolve()
+        dst_dir.mkdir(parents=True, exist_ok=True)
+        dst_file = (dst_dir / '__init__.py').resolve()
         dst_file.touch(exist_ok=True)
