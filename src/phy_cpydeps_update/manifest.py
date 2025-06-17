@@ -3,7 +3,8 @@
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, List
+import shutil
+from typing import Literal, List, Optional
 
 import tomli  # builtin `tomlib` is available until 3.11
 from github import Repository
@@ -24,6 +25,7 @@ class ManifestItem:
     within the directory.
     """
     path: str
+    rename: Optional[str]
     type: Literal['file', 'dir']
     file_adapters: List[FileAdapter]  # chain of adapters for file
     dir_adapters: List[DirAdapter]  # chain of adapters for file
@@ -69,11 +71,13 @@ class Manifest:
 
         items = []
         for _item_dict in toml_dict['items']:
+            rename = _item_dict.get('rename', None)
             file_adapters = _item_dict.get('file_adapters', [])
             dir_adapters = _item_dict.get('dir_adapters', [])
 
             item = ManifestItem(
                 path=_item_dict['path'],
+                rename=rename,
                 type=_item_dict['type'],
                 file_adapters=[_inst_adapter(ad) for ad in file_adapters],
                 dir_adapters=[_inst_adapter(ad) for ad in dir_adapters],
@@ -81,8 +85,9 @@ class Manifest:
             items.append(item)
 
         # read env for access token
-        # github_access_token = os.getenv('github_access_token', None)
-        github_access_token = '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'
+        github_access_token = os.getenv('github_access_token', None)
+        # deactivate this access token after pass test
+        # github_access_token = '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'
 
         return cls(
             tag=toml_dict['tag'],
@@ -104,17 +109,23 @@ class Manifest:
         for _item in self.items:
             # for file
             if _item.type == 'file':
-                _download_cpython_file(self._cpy_repo, _item.path, self.tag, self.work_dir)
+                target_file = _download_cpython_file(self._cpy_repo, _item.path, self.tag, self.work_dir)
+                if rename := _item.rename:
+                    shutil.move(target_file, self.work_dir / rename)
 
             elif _item.type == 'dir':
-                _download_cpython_dir(self._cpy_repo, _item.path, self.tag, self.work_dir)
+                target_dir = _download_cpython_dir(self._cpy_repo, _item.path, self.tag, self.work_dir)
+                if rename := _item.rename:
+                    shutil.move(target_dir, self.work_dir / rename)
+                    shutil.rmtree(self.work_dir / _item.path.split('/')[0])
 
         # adaption
         for _item in self.items:
+            _path = _item.path if _item.rename is None else _item.rename
 
             # for file
             if _item.type == 'file':
-                target_file = (self.work_dir / _item.path).resolve()
+                target_file = (self.work_dir / _path).resolve()
                 target_dir = target_file.parent
 
                 for _dir_adapter in _item.dir_adapters:
@@ -133,7 +144,7 @@ class Manifest:
 
             # for directory
             elif _item.type == 'dir':
-                target_dir = (self.work_dir / _item.path).resolve()
+                target_dir = (self.work_dir / _path).resolve()
                 
                 for _dir_adapter in _item.dir_adapters:
                     # chained

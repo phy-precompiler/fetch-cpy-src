@@ -9,6 +9,7 @@ type = 'dir'
 
 [[items]]
 path = 'Tools/peg_generator/pegen/'
+rename = 'pegen/'
 type = 'dir'
 file_adapters = ['ModAbsImportAdapter']
 
