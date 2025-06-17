@@ -118,12 +118,17 @@ class Manifest:
                 target_dir = target_file.parent
 
                 for _dir_adapter in _item.dir_adapters:
-                    _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
+                    # chained
+                    target_dir = _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
+                    if target_dir is None:
+                        break
 
                 for _adapter in _item.file_adapters:
-                    print(f'Apply adapter {_adapter.__class__.__name__} to {target_file}')
+                    # chained
+                    target_file = _adapter.adapt(target_file, in_place=True, dst_file=target_file)
+                    if target_dir is None:
+                        break
 
-                    _adapter.adapt(target_file, in_place=True, dst_file=target_file)
                     updated_list.append(target_file)
 
             # for directory
@@ -131,7 +136,10 @@ class Manifest:
                 target_dir = (self.work_dir / _item.path).resolve()
                 
                 for _dir_adapter in _item.dir_adapters:
-                    _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
+                    # chained
+                    target_dir = _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
+                    if target_dir is None:
+                        break
 
                 for _sub_dir, _folders, _files in os.walk(target_dir.resolve()):
                     _ = _folders
@@ -141,7 +149,11 @@ class Manifest:
                         target_file = sub_dir / _file_name
 
                         for _adapter in _item.file_adapters:
-                            _adapter.adapt(target_file, in_place=True, dst_file=target_file)
+                            # chained
+                            target_file = _adapter.adapt(target_file, in_place=True, dst_file=target_file)
+                            if target_file is None:
+                                break
+
                             updated_list.append(target_file)
 
         return updated_list

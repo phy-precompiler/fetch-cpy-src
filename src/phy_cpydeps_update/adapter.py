@@ -113,6 +113,7 @@ class ModAbsImportAdapter(FileAdapter, builtin_ast.NodeVisitor):
 
             # Adapted code for this node; import node can be within indent block, so start offset 
             # should be inherited.
+            # Of course cpython source code follows PEP-8 and use space as indent uniformly. 
             new_code = ' ' * node.col_offset + builtin_ast.unparse(trans_node)
 
             # replace only the extracted nodes
@@ -276,6 +277,7 @@ class TopLevelScriptImportAdapter(FileAdapter, builtin_ast.NodeVisitor):
 
             # Adapted code for this node; import node can be within indent block, so start offset 
             # should be inherited.
+            # Of course cpython source code follows PEP-8 and use space as indent uniformly. 
             new_code = ' ' * node.col_offset + builtin_ast.unparse(trans_node)
 
             # replace only the extracted nodes
@@ -327,3 +329,5 @@ class AddDunderInitAdapter(DirAdapter):
         dst_dir.mkdir(parents=True, exist_ok=True)
         dst_file = (dst_dir / '__init__.py').resolve()
         dst_file.touch(exist_ok=True)
+
+        return dst_dir
