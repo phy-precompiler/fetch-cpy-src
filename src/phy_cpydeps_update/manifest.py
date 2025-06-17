@@ -16,10 +16,16 @@ from phy_cpydeps_update.adapter import FileAdapter, DirAdapter, Adapter
 
 @dataclass
 class ManifestItem:
-    """ item of the manifest """
+    """ Item of the manifest. 
+    
+    Item of both type "file" & "dir" can have both `file_adapters` & `dir_adapters`.
+    For item of type "file", `dir_adapters` means those applied to the parent directory of
+    the file; for item of type "dir", `file_adapters` means those applied to the sub-file 
+    within the directory.
+    """
     path: str
     type: Literal['file', 'dir']
-    adapters: List[FileAdapter]  # chain of adapters for file
+    file_adapters: List[FileAdapter]  # chain of adapters for file
     dir_adapters: List[DirAdapter]  # chain of adapters for file
 
 
@@ -63,13 +69,14 @@ class Manifest:
 
         items = []
         for _item_dict in toml_dict['items']:
+            file_adapters = _item_dict.get('file_adapters', [])
+            dir_adapters = _item_dict.get('dir_adapters', [])
+
             item = ManifestItem(
                 path=_item_dict['path'],
                 type=_item_dict['type'],
-                adapters=[_inst_adapter(_adapter_name) for 
-                          _adapter_name in _item_dict.get('adapters', list())],
-                dir_adapters=[_inst_adapter(_adapter_name) for 
-                              _adapter_name in _item_dict.get('dir_adapters', list())],
+                file_adapters=[_inst_adapter(ad) for ad in file_adapters],
+                dir_adapters=[_inst_adapter(ad) for ad in dir_adapters],
             )
             items.append(item)
 
@@ -86,7 +93,7 @@ class Manifest:
 
 
     def update(self) -> List[Path]:
-        """ perform downloading & adaption, return proceeded files' path """
+        """ apply downloading & adaption, return proceeded files' path """
         updated_list: List[Path] = []
 
         # DO NOT merge downloading & adapting loop! For some adatption need work correctly when related 
@@ -113,8 +120,8 @@ class Manifest:
                 for _dir_adapter in _item.dir_adapters:
                     _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
 
-                for _adapter in _item.adapters:
-                    print(f'Perform adapter {_adapter.__class__.__name__} to {target_file}')
+                for _adapter in _item.file_adapters:
+                    print(f'Apply adapter {_adapter.__class__.__name__} to {target_file}')
 
                     _adapter.adapt(target_file, in_place=True, dst_file=target_file)
                     updated_list.append(target_file)
@@ -133,7 +140,7 @@ class Manifest:
                     for _file_name in _files:
                         target_file = sub_dir / _file_name
 
-                        for _adapter in _item.adapters:
+                        for _adapter in _item.file_adapters:
                             _adapter.adapt(target_file, in_place=True, dst_file=target_file)
                             updated_list.append(target_file)
 

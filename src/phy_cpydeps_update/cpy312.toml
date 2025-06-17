@@ -10,20 +10,20 @@ type = 'dir'
 [[items]]
 path = 'Tools/peg_generator/pegen/'
 type = 'dir'
-adapters = ['ModAbsImportAdapter']
+file_adapters = ['ModAbsImportAdapter']
 
 
 [[items]]
 path = 'Parser/asdl_c.py'
 type = 'file'
-adapters = ['TopLevelScriptImportAdapter']
+file_adapters = ['TopLevelScriptImportAdapter']
 dir_adapters = ['AddDunderInitAdapter']
 
 
 [[items]]
 path = 'Parser/asdl.py'
 type = 'file'
-adapters = ['TopLevelScriptImportAdapter']
+file_adapters = ['TopLevelScriptImportAdapter']
 
 
 [[items]]

@@ -19,7 +19,7 @@ class FileAdapter(ABC):
 
     @abstractmethod
     def adapt(self, src_file: Path, in_place: bool = True, dst_file: Path = None) -> Optional[Path]:
-        """ perform adaption to file """
+        """ apply adaption to file """
         raise NotImplementedError
     
 
@@ -28,7 +28,7 @@ class DirAdapter(ABC):
 
     @abstractmethod
     def adapt(self, src_dir: Path, in_place: bool = True, dst_dir: Path = None) -> Optional[Path]:
-        """ perform adaption to directory """
+        """ apply adaption to directory """
         raise NotImplementedError
     
 
@@ -156,7 +156,7 @@ class TopLevelScriptImportAdapter(FileAdapter, builtin_ast.NodeVisitor):
     To adapt such script to be usable in `phy` project, firstly make the script folder a module by
     adding `__init__.py` file, and then change the absolute import statements to relative ones. 
     
-    BE CAREFUL!!! This adapter should be performed after all sibling scripts downloaded, in order to 
+    BE CAREFUL!!! This adapter should be applied after all sibling scripts downloaded, in order to 
     get all importable symbols.
     """
 
