@@ -1,20 +1,12 @@
-# pylint: disable=missing-function-docstring
-""" test `phy_cpydeps_update/_downloader.py` """
+# pylint: disable=missing-function-docstring,unused-import
+""" test `fetch_cpy_src/downloader.py` """
 # imports
-from pathlib import Path
-from pprint import pprint
-
 import pytest
 
 # local imports
-from phy_cpydeps_update.downloader import _get_cpython_repo, \
+from fetch_cpy_src.downloader import _get_cpython_repo, \
     _download_cpython_file, _download_cpython_dir
-
-
-# constants
-TEST_DIR = Path(__file__).resolve().parent
-BASE_DIR = TEST_DIR.parent
-TMP_DIR = BASE_DIR / 'tmp'
+from tests._common import TEST_DIR, TMP_DIR
 
 
 def get_github_access_token() -> str:

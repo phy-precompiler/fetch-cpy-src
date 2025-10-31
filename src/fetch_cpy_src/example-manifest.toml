@@ -1,19 +1,3 @@
-# Fetch selected part of cpython source repository.
-
-This project is part of [`phy`](https://github.com/phy-precompiler).
-
-## Install
-
-```shell
-pip install fetch-cpy-src
-```
-
-
-## List the files to be fetched 
-
-Make a manifest toml file with scheme like the following example:
-
-```toml
 # git repo tag
 tag = "3.12"
 
@@ -52,30 +36,3 @@ dir_adapters = ['AddDunderInitAdapter']
 [[items]]
 path = 'Grammar/'
 type = 'dir'
-
-
-```
-
-## Fetch files 
-
-Supposing the manifest file is `demo.toml`, fetch the files within the manifest by 
-this command: 
-
-```shell
-fetch-cpy-src fetch demo.toml
-```
-
-The full manual of the `fetch-cpy-src` command:
-
-```shell
-Usage: fetch-cpy-src [OPTIONS] COMMAND [ARGS]...
-
-  group all sub commands
-
-Options:
-  --help  Show this message and exit.
-
-Commands:
-  fetch         Fetch files listed in manifest to destinition directory.
-  new-manifest  Create a new manifest of cpython source files to be fetched.
-```

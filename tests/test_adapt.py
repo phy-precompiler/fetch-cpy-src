@@ -1,5 +1,5 @@
-# pylint: disable=missing-function-docstring
-""" test `phy_cpydeps_update/_adapter.py` """
+# pylint: disable=missing-function-docstring,unused-import
+""" test `fetch_cpy_src/adapter.py` """
 # imports
 from pathlib import Path
 from pprint import pprint
@@ -7,16 +7,10 @@ from pprint import pprint
 import pytest
 
 # local imports
-from phy_cpydeps_update.adapter import ModAbsImportAdapter, \
+from fetch_cpy_src.adapter import ModAbsImportAdapter, \
     TopLevelScriptImportAdapter, AddDunderInitAdapter
-from phy_cpydeps_update.manifest import Manifest
-
-
-# constants
-TEST_DIR = Path(__file__).resolve().parent
-BASE_DIR = TEST_DIR.parent
-SRC_DIR = BASE_DIR / 'src'
-TMP_DIR = BASE_DIR / 'tmp'
+from fetch_cpy_src.manifest import Manifest
+from tests._common import SRC_DIR, TMP_DIR
 
 
 @pytest.mark.skip()
@@ -43,9 +37,9 @@ def test_add_init_adapt():
     adapter.adapt(src_file, in_place=True)
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_manifest():
-    config_file = SRC_DIR / 'phy_cpydeps_update/cpy312.toml'
+    config_file = SRC_DIR / 'fetch_cpy_src/cpy312.toml'
     manifest = Manifest.load(config_file, work_dir=TMP_DIR)
 
     manifest.update()

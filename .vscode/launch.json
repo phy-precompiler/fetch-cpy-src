@@ -8,7 +8,8 @@
             "module": "pytest",
             "args": [
                 "-s"
-            ]
-        }
+            ],
+            "preLaunchTask": "poetry install"
+        },
     ],
 }
