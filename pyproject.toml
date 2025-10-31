@@ -1,6 +1,6 @@
 [project]
 name = "fetch-cpy-src"
-version = "0.1.0"
+version = "0.1.1"
 description = "Fetch selected part of cpython source repository."
 authors = [
     {name = "Alfred DU",email = "ihearmywords@hotmail.com"}

@@ -34,7 +34,7 @@ def _copy_manifest_template(filename: str, target_dir: Path):
     '--dst', 
     type=click.Path(), 
     default=Path.cwd().resolve(strict=True), 
-    help='destinition directory that the new manifest file created in'
+    help='destinition directory that the new manifest file created in; if not given, the current directory is used'
 )
 def cli_endpoint_new_manifest(filename: str, dst: Path):
     """ Create a new manifest of cpython source files to be fetched. 
@@ -50,22 +50,40 @@ def cli_endpoint_new_manifest(filename: str, dst: Path):
     '--manifest', 
     type=click.Path(), 
     default=None,
-    help='manifest file'
+    help='manifest file; if not given, the manifest of `phy` project is used'
 )
 @click.option(
     '-d', 
     '--dst', 
     type=click.Path(), 
     default=Path.cwd().resolve(strict=True), 
-    help='destinition directory that fetched files to be saved in'
+    help='destinition directory that fetched files to be saved in; if not given, the current directory is used'
 )
-def cli_endpoint_fetch(manifest: Path, dst: Path):
+@click.option(
+    'a',
+    '--access-token',
+    envvar=Manifest.github_access_token_env_var,
+    default=None,
+    help='github account access token to avoid exceeding github limit rate'
+)
+def cli_endpoint_fetch(manifest: Path, dst: Path, access_token: str):
     """ Fetch files listed in manifest to destinition directory. """
+    if not access_token:
+        access_token = None
+
     if manifest is None:
         with resources.as_file(resources.files('fetch_cpy_src').joinpath('phy.toml')) as phy_manifest:
-            fetched_files = Manifest.load(phy_manifest, work_dir=dst).update()
+            fetched_files = Manifest.load(
+                phy_manifest, 
+                work_dir=dst,
+                github_access_token=access_token
+            ).update()
     else:
-        fetched_files = Manifest.load(manifest, work_dir=dst).update()
+        fetched_files = Manifest.load(
+            manifest, 
+            work_dir=dst,
+            github_access_token=access_token
+        ).update()
         
     for _path in fetched_files:
         print('Fetched file: ', _path)

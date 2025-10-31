@@ -39,6 +39,9 @@ def _inst_adapter(subcls_name: str) -> Adapter:
 class Manifest:
     """ manifest of files & directories of cpython repo to be downloaded & adapted """
 
+    # class attributes
+    github_access_token_env_var = 'GITHUB_ACCESS_TOKEN'
+
     # instance attributes
     _cpy_repo: Repository
 
@@ -62,7 +65,7 @@ class Manifest:
         self._cpy_repo = _get_cpython_repo(access_token=github_access_token)
 
     @classmethod
-    def load(cls, toml_file: Path, work_dir: Path = None) -> 'Manifest':
+    def load(cls, toml_file: Path, work_dir: Path = None, github_access_token: Optional[str] = None) -> 'Manifest':
         """ create manifest from toml """
         # read toml file
         toml_file = toml_file.resolve()
@@ -85,10 +88,9 @@ class Manifest:
             items.append(item)
 
         # read env for access token
-        github_access_token = os.getenv('github_access_token', None)
-        # deactivate this access token after pass test
-        # github_access_token = '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'
-
+        if not github_access_token:
+            github_access_token = os.getenv(cls.github_access_token_env_var, None)
+            
         return cls(
             tag=toml_dict['tag'],
             items=items,
