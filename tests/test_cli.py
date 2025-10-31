@@ -5,16 +5,11 @@ from click.testing import CliRunner
 import pytest
 
 # local imports
-from fetch_cpy_src.cli import cli_app, _copy_manifest_template
+from fetch_cpy_src.cli import cli_app
 from tests._common import TMP_DIR
 
 
-@pytest.mark.skip()
-def test_copy_manifest_template():
-    _copy_manifest_template('demo', TMP_DIR)
-
-
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_new_manifest():
     cli_runner = CliRunner()
     result = cli_runner.invoke(cli_app, ['new-manifest', 'demo'])

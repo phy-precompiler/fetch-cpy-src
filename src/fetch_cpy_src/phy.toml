@@ -1,5 +1,5 @@
-# `phy` project dependencies for cpython 3.12
-tag = "3.12"
+# this is the cpython source files manifest used by `phy` project
+tag = "3.14"
 
 
 [[items]]
@@ -35,3 +35,8 @@ type = 'file'
 [[items]]
 path = 'Parser/action_helpers.c'
 type = 'file'
+
+
+[[items]]
+path = 'Lib/test/'
+type = 'dir'
