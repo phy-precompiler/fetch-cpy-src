@@ -60,7 +60,7 @@ def cli_endpoint_new_manifest(filename: str, dst: Path):
     help='destinition directory that fetched files to be saved in; if not given, the current directory is used'
 )
 @click.option(
-    'a',
+    '-a',
     '--access-token',
     envvar=Manifest.github_access_token_env_var,
     default=None,
