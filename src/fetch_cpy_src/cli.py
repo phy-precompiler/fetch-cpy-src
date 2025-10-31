@@ -41,6 +41,7 @@ def cli_endpoint_new_manifest(filename: str, dst: str):
     
     FILENAME: name of the manifest file without extension.
     """
+    # REMINDER: argument or option resolved by type `click.Path()` will be str, not pathlib.Path
     _copy_manifest_template(filename, Path(dst).resolve())
 
 
@@ -66,7 +67,7 @@ def cli_endpoint_new_manifest(filename: str, dst: str):
     type=click.STRING,
     help='github account access token to avoid exceeding github limit rate'
 )
-def cli_endpoint_fetch(manifest: Path, dst: str, access_token: str):
+def cli_endpoint_fetch(manifest: str, dst: str, access_token: str):
     """ Fetch files listed in manifest to destinition directory. """
     if not access_token:
         access_token = None
@@ -80,7 +81,7 @@ def cli_endpoint_fetch(manifest: Path, dst: str, access_token: str):
             ).update()
     else:
         fetched_files = Manifest.load(
-            manifest, 
+            Path(manifest).resolve(), 
             work_dir=Path(dst).resolve(),
             github_access_token=access_token
         ).update()
