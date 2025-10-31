@@ -8,5 +8,13 @@
       "args": ["build"],
       "problemMatcher": []
     },
+
+    {
+      "label": "doc build (manifest)",
+      "type": "shell",
+      "command": "poetry",
+      "args": ["-I", "src", "-m", "fetch_cpy_src.manifest", "--render-toc", ">", "docs/manifest.md"],
+      "problemMatcher": []
+    }
   ]
 }

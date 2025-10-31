@@ -1,6 +1,6 @@
 [project]
 name = "fetch-cpy-src"
-version = "0.1.1"
+version = "0.1.2"
 description = "Fetch selected part of cpython source repository."
 authors = [
     {name = "Alfred DU",email = "ihearmywords@hotmail.com"}
@@ -29,6 +29,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
 pdoc = "^16.0.0"
+pydoc-markdown = "^4.8.2"
 
 [tool.pytest.ini_options]
 norecursedirs = ["tmp", ]

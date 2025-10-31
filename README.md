@@ -82,3 +82,9 @@ Commands:
   fetch         Fetch files listed in manifest to destinition directory.
   new-manifest  Create a new manifest of cpython source files to be fetched.
 ```
+
+# API docs
+
++ [module](docs/module.md)
++ [manifest](docs/manifest.md)
++ [adapter](docs/adapter.md)
