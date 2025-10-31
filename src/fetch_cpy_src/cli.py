@@ -27,17 +27,17 @@ def _copy_manifest_template(filename: str, target_dir: Path):
 @click.argument(
     'filename', 
     type=click.STRING, 
-    help='name of the manifest file without extension'
+    # help='name of the manifest file without extension'
 )
 @click.option(
     '-d', 
     '--dst', 
-    type=click.Path, 
+    type=click.Path(), 
     default=Path.cwd().resolve(strict=True), 
-    help='destinition directory that the new manifest file created in'
+    # help='destinition directory that the new manifest file created in'
 )
 def cli_endpoint_new_manifest(filename: str, dst: Path):
-    """ Create a new manifest of cpython source files to be fetched, at current path. """
+    """ Create a new manifest of cpython source files to be fetched. """
     _copy_manifest_template(filename, dst)
 
 
@@ -45,19 +45,24 @@ def cli_endpoint_new_manifest(filename: str, dst: Path):
 @click.option(
     '-m', 
     '--manifest', 
-    type=click.Path, 
+    type=click.Path(), 
     default=resources.as_file(resources.files('fetch_cpy_src').joinpath('phy.toml')),
-    help='manifest file'
+    # help='manifest file'
 )
 @click.option(
     '-d', 
     '--dst', 
-    type=click.Path, 
+    type=click.Path(), 
     default=Path.cwd().resolve(strict=True), 
-    help='destinition directory that fetched files to be saved in'
+    # help='destinition directory that fetched files to be saved in'
 )
 def cli_endpoint_fetch(manifest: Path, dst: Path):
-    """ Create a new manifest of cpython source files to be fetched, at current path. """
+    """ Fetch files listed in manifest to destinition directory. """
     fetched_files = Manifest.load(manifest, work_dir=dst).update()
     for _path in fetched_files:
         print('Fetched file: ', _path)
+
+
+def main():
+    """ expose method entry to `pyproject.toml` script spec """
+    cli_app()

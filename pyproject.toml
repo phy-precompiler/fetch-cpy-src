@@ -6,17 +6,20 @@ authors = [
     {name = "Alfred DU",email = "ihearmywords@hotmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10, <4"
 dependencies = [
     "requests (>=2.32.3,<3.0.0)",
     "pygithub (>=2.6.1,<3.0.0)",
     "tomli (>=2.2.1,<3.0.0)",
-    "click (>=8.3.0,<9.0.0)"
+    "click (>=8.3.0,<9.0.0)",
 ]
 
 
 [tool.poetry]
 packages = [{include = "fetch_cpy_src", from = "src"}]
+
+[tool.poetry.scripts]
+fetch-cpy-src = "fetch_cpy_src.cli:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -25,6 +28,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
+pdoc = "^16.0.0"
 
 [tool.pytest.ini_options]
 norecursedirs = ["tmp", ]
