@@ -63,7 +63,7 @@ def cli_endpoint_new_manifest(filename: str, dst: Path):
     '-a',
     '--access-token',
     envvar=Manifest.github_access_token_env_var,
-    default=None,
+    type=click.STRING,
     help='github account access token to avoid exceeding github limit rate'
 )
 def cli_endpoint_fetch(manifest: Path, dst: Path, access_token: str):

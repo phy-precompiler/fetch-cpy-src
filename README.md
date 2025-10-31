@@ -29,6 +29,10 @@ tag = "3.12"
 path = 'Parser/asdl_c.py'
 type = 'file'
 
+# `rename` is OPTIONAL. Specifying this field can rename fetched file or move to 
+# another directory.
+rename = 'asdl_c.py'
+
 # The `xxx_adapters` are OPTIONAL fields. Adapters will make pre-defined modification
 # to fetched source files. 
 #
@@ -52,7 +56,6 @@ dir_adapters = ['AddDunderInitAdapter']
 [[items]]
 path = 'Grammar/'
 type = 'dir'
-
 
 ```
 
