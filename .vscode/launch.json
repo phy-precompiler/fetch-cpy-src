@@ -8,16 +8,8 @@
             "module": "pytest",
             "args": [
                 "-s"
-            ]
+            ],
+            "preLaunchTask": "poetry build"
         },
-        {
-            "name": "Build wheel",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "poetry",
-            "args": [
-                "build"
-            ]
-        }
     ],
 }

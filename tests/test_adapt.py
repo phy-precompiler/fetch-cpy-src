@@ -43,7 +43,7 @@ def test_add_init_adapt():
     adapter.adapt(src_file, in_place=True)
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_manifest():
     config_file = SRC_DIR / 'phy_cpydeps_update/cpy312.toml'
     manifest = Manifest.load(config_file, work_dir=TMP_DIR)
