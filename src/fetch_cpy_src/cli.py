@@ -49,7 +49,7 @@ def cli_endpoint_new_manifest(filename: str, dst: Path):
     '-m', 
     '--manifest', 
     type=click.Path(), 
-    default=resources.as_file(resources.files('fetch_cpy_src').joinpath('phy.toml')),
+    default=None,
     help='manifest file'
 )
 @click.option(
@@ -61,7 +61,12 @@ def cli_endpoint_new_manifest(filename: str, dst: Path):
 )
 def cli_endpoint_fetch(manifest: Path, dst: Path):
     """ Fetch files listed in manifest to destinition directory. """
-    fetched_files = Manifest.load(manifest, work_dir=dst).update()
+    if manifest is None:
+        with resources.as_file(resources.files('fetch_cpy_src').joinpath('phy.toml')) as phy_manifest:
+            fetched_files = Manifest.load(phy_manifest, work_dir=dst).update()
+    else:
+        fetched_files = Manifest.load(manifest, work_dir=dst).update()
+        
     for _path in fetched_files:
         print('Fetched file: ', _path)
 
