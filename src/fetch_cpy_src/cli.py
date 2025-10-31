@@ -36,12 +36,12 @@ def _copy_manifest_template(filename: str, target_dir: Path):
     default=Path.cwd().resolve(strict=True), 
     help='destinition directory that the new manifest file created in; if not given, the current directory is used'
 )
-def cli_endpoint_new_manifest(filename: str, dst: Path):
+def cli_endpoint_new_manifest(filename: str, dst: str):
     """ Create a new manifest of cpython source files to be fetched. 
     
     FILENAME: name of the manifest file without extension.
     """
-    _copy_manifest_template(filename, dst)
+    _copy_manifest_template(filename, Path(dst).resolve())
 
 
 @cli_app.command(name='fetch')
@@ -66,7 +66,7 @@ def cli_endpoint_new_manifest(filename: str, dst: Path):
     type=click.STRING,
     help='github account access token to avoid exceeding github limit rate'
 )
-def cli_endpoint_fetch(manifest: Path, dst: Path, access_token: str):
+def cli_endpoint_fetch(manifest: Path, dst: str, access_token: str):
     """ Fetch files listed in manifest to destinition directory. """
     if not access_token:
         access_token = None
@@ -75,13 +75,13 @@ def cli_endpoint_fetch(manifest: Path, dst: Path, access_token: str):
         with resources.as_file(resources.files('fetch_cpy_src').joinpath('phy.toml')) as phy_manifest:
             fetched_files = Manifest.load(
                 phy_manifest, 
-                work_dir=dst,
+                work_dir=Path(dst).resolve(),
                 github_access_token=access_token
             ).update()
     else:
         fetched_files = Manifest.load(
             manifest, 
-            work_dir=dst,
+            work_dir=Path(dst).resolve(),
             github_access_token=access_token
         ).update()
         
