@@ -18,6 +18,7 @@ def cli_app():
 def _copy_manifest_template(filename: str, target_dir: Path):
     """ copy manifest template file to target path """
     src = resources.files('fetch_cpy_src').joinpath('example-manifest.toml')
+    print('>>>>>>>>>>>>', src)
     target = target_dir / f'{filename}.toml'
     with resources.as_file(src) as src_path:
         shutil.copy(src_path, target)

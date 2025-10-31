@@ -10,13 +10,7 @@ import pytest
 from fetch_cpy_src.adapter import ModAbsImportAdapter, \
     TopLevelScriptImportAdapter, AddDunderInitAdapter
 from fetch_cpy_src.manifest import Manifest
-
-
-# constants
-TEST_DIR = Path(__file__).resolve().parent
-BASE_DIR = TEST_DIR.parent
-SRC_DIR = BASE_DIR / 'src'
-TMP_DIR = BASE_DIR / 'tmp'
+from tests._common import SRC_DIR, TMP_DIR
 
 
 @pytest.mark.skip()
@@ -45,7 +39,7 @@ def test_add_init_adapt():
 
 @pytest.mark.skip()
 def test_manifest():
-    config_file = SRC_DIR / 'phy_cpydeps_update/cpy312.toml'
+    config_file = SRC_DIR / 'fetch_cpy_src/cpy312.toml'
     manifest = Manifest.load(config_file, work_dir=TMP_DIR)
 
     manifest.update()
