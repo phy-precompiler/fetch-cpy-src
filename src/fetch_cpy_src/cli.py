@@ -24,20 +24,23 @@ def _copy_manifest_template(filename: str, target_dir: Path):
 
 
 @cli_app.command(name='new-manifest')
+# `argument` of click DOES NOT allow help kwarg
 @click.argument(
     'filename', 
-    type=click.STRING, 
-    # help='name of the manifest file without extension'
+    type=click.STRING
 )
 @click.option(
     '-d', 
     '--dst', 
     type=click.Path(), 
     default=Path.cwd().resolve(strict=True), 
-    # help='destinition directory that the new manifest file created in'
+    help='destinition directory that the new manifest file created in'
 )
 def cli_endpoint_new_manifest(filename: str, dst: Path):
-    """ Create a new manifest of cpython source files to be fetched. """
+    """ Create a new manifest of cpython source files to be fetched. 
+    
+    FILENAME: name of the manifest file without extension.
+    """
     _copy_manifest_template(filename, dst)
 
 
@@ -47,14 +50,14 @@ def cli_endpoint_new_manifest(filename: str, dst: Path):
     '--manifest', 
     type=click.Path(), 
     default=resources.as_file(resources.files('fetch_cpy_src').joinpath('phy.toml')),
-    # help='manifest file'
+    help='manifest file'
 )
 @click.option(
     '-d', 
     '--dst', 
     type=click.Path(), 
     default=Path.cwd().resolve(strict=True), 
-    # help='destinition directory that fetched files to be saved in'
+    help='destinition directory that fetched files to be saved in'
 )
 def cli_endpoint_fetch(manifest: Path, dst: Path):
     """ Fetch files listed in manifest to destinition directory. """

@@ -30,21 +30,42 @@ path = 'Parser/asdl_c.py'
 type = 'file'
 
 # The `xxx_adapters` are OPTIONAL fields. Adapters will make pre-defined modification
-# to fetched source files. To use proper adapters, refer to the docstring of 
-# submodule `fetch_cpy_src.adapter`. 
+# to fetched source files. 
+#
+#  + `file_adapters` will apply modification to fetch file (if type = 'file') or 
+#    any files within fetched directory (if type = 'dir').
+#  + `dir_adapters` will apply modification to the directory of the fetched file 
+#    (if type = 'file') or the fetched directory (if type = 'dir').
+# 
+# In this example, 
+#  + `TopLevelScriptImportAdapter` will refactor the fetched python script file to 
+#    importable submodules.
+#  + `AddDunderInitAdapter` will put an empty `__init__.py` at fetched directory, 
+#    and thus make it a package.
 file_adapters = ['TopLevelScriptImportAdapter']
 dir_adapters = ['AddDunderInitAdapter']
 
 
 # This is a demo item specification for fetch sub-directory of source repo.
 # `path`: path of the directory to be fetched;
-# `type`: set to "dir" for fetching entire sub-directory;
+# `type`: set to "dir" for fetching entire sub-directory.
 [[items]]
 path = 'Grammar/'
 type = 'dir'
+
+
 ```
 
-## Use `cli` to fetch files
+## Fetch files 
+
+Supposing the manifest file is `demo.toml`, fetch the files within the manifest by 
+this command: 
+
+```shell
+fetch-cpy-src fetch demo.toml
+```
+
+The full manual of the `fetch-cpy-src` command:
 
 ```shell
 Usage: fetch-cpy-src [OPTIONS] COMMAND [ARGS]...
