@@ -10,9 +10,9 @@ import tomli  # builtin `tomlib` is available until 3.11
 from github import Repository
 
 # local imports
-from phy_cpydeps_update.downloader import _get_cpython_repo, _download_cpython_file, _download_cpython_dir
-from phy_cpydeps_update import adapter
-from phy_cpydeps_update.adapter import FileAdapter, DirAdapter, Adapter
+from fetch_cpy_src.downloader import _get_cpython_repo, _download_cpython_file, _download_cpython_dir
+from fetch_cpy_src import adapter
+from fetch_cpy_src.adapter import FileAdapter, DirAdapter, Adapter
 
 
 @dataclass

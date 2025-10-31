@@ -1,5 +1,5 @@
-# pylint: disable=missing-function-docstring
-""" test `phy_cpydeps_update/_downloader.py` """
+# pylint: disable=missing-function-docstring,unused-import
+""" test `fetch_cpy_src/downloader.py` """
 # imports
 from pathlib import Path
 from pprint import pprint
@@ -7,7 +7,7 @@ from pprint import pprint
 import pytest
 
 # local imports
-from phy_cpydeps_update.downloader import _get_cpython_repo, \
+from fetch_cpy_src.downloader import _get_cpython_repo, \
     _download_cpython_file, _download_cpython_dir
 
 

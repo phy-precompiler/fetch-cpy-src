@@ -1,5 +1,5 @@
-# pylint: disable=missing-function-docstring
-""" test `phy_cpydeps_update/_adapter.py` """
+# pylint: disable=missing-function-docstring,unused-import
+""" test `fetch_cpy_src/adapter.py` """
 # imports
 from pathlib import Path
 from pprint import pprint
@@ -7,9 +7,9 @@ from pprint import pprint
 import pytest
 
 # local imports
-from phy_cpydeps_update.adapter import ModAbsImportAdapter, \
+from fetch_cpy_src.adapter import ModAbsImportAdapter, \
     TopLevelScriptImportAdapter, AddDunderInitAdapter
-from phy_cpydeps_update.manifest import Manifest
+from fetch_cpy_src.manifest import Manifest
 
 
 # constants

@@ -9,6 +9,15 @@
             "args": [
                 "-s"
             ]
+        },
+        {
+            "name": "Build wheel",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "poetry",
+            "args": [
+                "build"
+            ]
         }
     ],
 }

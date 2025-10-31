@@ -1,21 +1,22 @@
 [project]
-name = "phy-cpydeps-update"
+name = "fetch-cpy-src"
 version = "0.1.0"
-description = "Download & update `phy` project dependencies from `cpython` source repository."
+description = "Fetch selected part of cpython source repository."
 authors = [
     {name = "Alfred DU",email = "ihearmywords@hotmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
     "requests (>=2.32.3,<3.0.0)",
     "pygithub (>=2.6.1,<3.0.0)",
-    "tomli (>=2.2.1,<3.0.0)"
+    "tomli (>=2.2.1,<3.0.0)",
+    "click (>=8.3.0,<9.0.0)"
 ]
 
 
 [tool.poetry]
-packages = [{include = "phy_cpydeps_update", from = "src"}]
+packages = [{include = "fetch_cpy_src", from = "src"}]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
