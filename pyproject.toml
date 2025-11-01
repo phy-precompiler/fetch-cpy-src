@@ -1,6 +1,6 @@
 [project]
 name = "fetch-cpy-src"
-version = "0.1.4"
+version = "0.1.5"
 description = "Fetch selected part of cpython source repository."
 authors = [
     {name = "Alfred DU",email = "ihearmywords@hotmail.com"}
@@ -13,6 +13,12 @@ dependencies = [
     "tomli (>=2.2.1,<3.0.0)",
     "click (>=8.3.0,<9.0.0)",
 ]
+
+[project.urls]
+Homepage = "https://github.com/phy-precompiler/fetch-cpy-src"
+# Documentation = "https://readthedocs.org"
+Repository = "https://github.com/phy-precompiler/fetch-cpy-src"
+Issues = "https://github.com/phy-precompiler/fetch-cpy-src/issues"
 
 
 [tool.poetry]
