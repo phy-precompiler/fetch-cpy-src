@@ -98,7 +98,6 @@ class Manifest:
             github_access_token=github_access_token
         )
 
-
     def update(self) -> List[Path]:
         """ apply downloading & adaption, return proceeded files' path """
         updated_list: List[Path] = []

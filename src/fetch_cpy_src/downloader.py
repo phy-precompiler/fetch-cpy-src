@@ -52,7 +52,7 @@ def _download_cpython_dir(repo: Repository, path: str, tag: str, target_dir: Pat
         if _sub_content.type == 'dir':
             _download_cpython_dir(repo, _sub_content.path, tag, target_dir)
 
-        else:  #  _sub_content.type == 'file'
+        else:  # _sub_content.type == 'file'
             _download_cpython_file(repo, _sub_content.path, tag, target_dir)
 
     return target_path
