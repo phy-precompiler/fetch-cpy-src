@@ -1,4 +1,4 @@
 [flake8]
 max-line-length = 100
-ignore = E203, E501, W291, W293
+ignore = E203, E501, F401, W291, W293
 exclude = __pycache__, build, dist, tmp
