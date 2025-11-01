@@ -92,7 +92,7 @@ class ModAbsImportAdapter(FileAdapter, builtin_ast.NodeVisitor):
 
         # iterate over concerned nodes
         code_lines = src_code.splitlines()
-        trans_node: builtin_ast.ImportFrom = None
+        trans_node: builtin_ast.ImportFrom = None  # type: ignore[assignment]
 
         for node in self._abs_from_import_nodes:
             # transfer "from <match_mod> import xxx" to "from . import xxx"
@@ -228,7 +228,7 @@ class TopLevelScriptImportAdapter(FileAdapter, builtin_ast.NodeVisitor):
 
         # iterate over concerned nodes
         code_lines = src_code.splitlines()
-        trans_node: builtin_ast.ImportFrom = None
+        trans_node: builtin_ast.ImportFrom = None  # type: ignore[assignment]
 
         for node in self._abs_import_nodes:
 
@@ -239,7 +239,7 @@ class TopLevelScriptImportAdapter(FileAdapter, builtin_ast.NodeVisitor):
                 # "from .<importable_name> import xxx";
                 # transfer "from <importable_name>.yyy import xxx" to
                 # "from .<importable_name>.yyy import xxx"
-                node.module = '.' + node.module
+                node.module = '.' + node.module  # type: ignore[operator]
 
                 node.level = 1
                 trans_node = node
@@ -327,7 +327,7 @@ class AddDunderInitAdapter(DirAdapter):
             dst_dir = src_dir
 
         dst_dir.mkdir(parents=True, exist_ok=True)
-        dst_file = (dst_dir / '__init__.py').resolve()
+        dst_file = (dst_dir / '__init__.py').resolve()  # type: ignore[operator]
         dst_file.touch(exist_ok=True)
 
         return dst_dir

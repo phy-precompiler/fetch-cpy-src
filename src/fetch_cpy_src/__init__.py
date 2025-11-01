@@ -1,5 +1,5 @@
 """ Fetch selected part of cpython source repository. """
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __all__ = [
     'fetch_manifest',
 ]
@@ -20,3 +20,5 @@ def fetch_manifest(manifest: Path, dst: Path = None) -> List[Path]:
     fetched_files = Manifest.load(manifest, work_dir=dst).update()
     for _path in fetched_files:
         print('Fetched file: ', _path)
+
+    return fetched_files

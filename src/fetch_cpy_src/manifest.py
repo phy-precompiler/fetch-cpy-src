@@ -7,7 +7,7 @@ import shutil
 from typing import Literal, List, Optional
 
 import tomli  # builtin `tomlib` is available until 3.11
-from github import Repository
+from github.Repository import Repository
 
 # local imports
 from fetch_cpy_src.downloader import _get_cpython_repo, _download_cpython_file, _download_cpython_dir
@@ -82,9 +82,9 @@ class Manifest:
                 path=_item_dict['path'],
                 rename=rename,
                 type=_item_dict['type'],
-                file_adapters=[_inst_adapter(ad) for ad in file_adapters],
-                dir_adapters=[_inst_adapter(ad) for ad in dir_adapters],
-            )
+                file_adapters=[_inst_adapter(ad) for ad in file_adapters],  # type: ignore[misc]
+                dir_adapters=[_inst_adapter(ad) for ad in dir_adapters],  # type: ignore[misc]
+            )  
             items.append(item)
 
         # read env for access token
@@ -131,13 +131,13 @@ class Manifest:
 
                 for _dir_adapter in _item.dir_adapters:
                     # chained
-                    target_dir = _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
+                    target_dir = _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)  # type: ignore[assignment]
                     if target_dir is None:
                         break
 
                 for _adapter in _item.file_adapters:
                     # chained
-                    target_file = _adapter.adapt(target_file, in_place=True, dst_file=target_file)
+                    target_file = _adapter.adapt(target_file, in_place=True, dst_file=target_file)  # type: ignore[assignment]
                     if target_dir is None:
                         break
 
@@ -149,7 +149,7 @@ class Manifest:
                 
                 for _dir_adapter in _item.dir_adapters:
                     # chained
-                    target_dir = _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)
+                    target_dir = _dir_adapter.adapt(target_dir, in_place=True, dst_dir=target_dir)  # type: ignore[assignment]
                     if target_dir is None:
                         break
 
@@ -162,7 +162,7 @@ class Manifest:
 
                         for _adapter in _item.file_adapters:
                             # chained
-                            target_file = _adapter.adapt(target_file, in_place=True, dst_file=target_file)
+                            target_file = _adapter.adapt(target_file, in_place=True, dst_file=target_file)  # type: ignore[assignment]
                             if target_file is None:
                                 break
 

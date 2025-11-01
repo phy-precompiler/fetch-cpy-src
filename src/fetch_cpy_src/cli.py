@@ -70,7 +70,7 @@ def cli_endpoint_new_manifest(filename: str, dst: str):
 def cli_endpoint_fetch(manifest: str, dst: str, access_token: str):
     """ Fetch files listed in manifest to destinition directory. """
     if not access_token:
-        access_token = None
+        access_token = None  # type: ignore[assignment]
 
     if manifest is None:
         with resources.as_file(resources.files('fetch_cpy_src').joinpath('phy.toml')) as phy_manifest:
