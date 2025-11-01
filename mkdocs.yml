@@ -1,18 +1,13 @@
 site_name: Fetch-cpy-src Project
 site_url: https://fetch-cpy-src.readthedocs.io
 repo_url: https://github.com/phy-precompiler/fetch-cpy-src
-repo_name: yourname/myproject
+repo_name: phy-precompiler/fetch-cpy-src
 
 theme:
   name: material
 
 plugins:
   - search
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          paths: [src]
 
 nav:
   - Home: index.md
