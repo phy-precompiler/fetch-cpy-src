@@ -22,16 +22,15 @@ Repository = "https://github.com/phy-precompiler/fetch-cpy-src"
 Issues = "https://github.com/phy-precompiler/fetch-cpy-src/issues"
 
 
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 packages = [{include = "fetch_cpy_src", from = "src"}]
 
 [tool.poetry.scripts]
 fetch-cpy-src = "fetch_cpy_src.cli:main"
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
