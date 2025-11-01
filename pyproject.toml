@@ -1,11 +1,12 @@
 [project]
 name = "fetch-cpy-src"
-version = "0.1.5"
+version = "0.1.6"
 description = "Fetch selected part of cpython source repository."
 authors = [
     {name = "Alfred DU",email = "ihearmywords@hotmail.com"}
 ]
 readme = "README.md"
+license = { text = "MIT" }
 requires-python = ">=3.10, <4"
 dependencies = [
     "requests (>=2.32.3,<3.0.0)",
