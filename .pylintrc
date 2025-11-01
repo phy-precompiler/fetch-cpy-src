@@ -1,0 +1,26 @@
+[MAIN]
+ignore = tmp
+
+[MESSAGES CONTROL]
+disable = 
+    raw-checker-failed,
+    bad-inline-option,
+    locally-disabled,
+    file-ignored,
+    suppressed-message,
+    useless-suppression,
+    deprecated-pragma,
+    use-implicit-booleaness-not-comparison-to-string,
+    use-implicit-booleaness-not-comparison-to-zero,
+    use-symbolic-message-instead,
+    use-dict-literal,
+    unnecessary-pass,
+    trailing-whitespace,
+    invalid-name,
+    consider-using-f-string,
+    too-many-locals,
+    too-many-branches,
+    too-many-statements,
+    too-many-nested-blocks,
+    too-few-public-methods,
+    line-too-long
