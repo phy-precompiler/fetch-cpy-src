@@ -35,7 +35,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
-pdoc = "^16.0.0"
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.6.22"
 pydoc-markdown = "^4.8.2"
 
 [tool.pytest.ini_options]
