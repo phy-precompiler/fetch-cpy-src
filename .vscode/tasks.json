@@ -10,10 +10,10 @@
     },
 
     {
-      "label": "doc build (manifest)",
+      "label": "mkdocs build",
       "type": "shell",
-      "command": "poetry",
-      "args": ["-I", "src", "-m", "fetch_cpy_src.manifest", "--render-toc", ">", "docs/manifest.md"],
+      "command": "mkdocs",
+      "args": ["build"],
       "problemMatcher": []
     }
   ]

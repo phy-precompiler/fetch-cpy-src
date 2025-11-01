@@ -4,6 +4,7 @@ __pycache__/
 
 .venv/
 dist/
+site/
 
 tests/access_token
 tmp/
