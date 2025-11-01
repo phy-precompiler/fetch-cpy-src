@@ -37,8 +37,9 @@ build-backend = "poetry.core.masonry.api"
 pytest = "^8.3.5"
 mkdocs = "^1.6.1"
 mkdocs-material = "^9.6.22"
-mkdocstrings = {extras = ["python"], version = "^0.30.1"}
 pydoc-markdown = "^4.8.2"
+mkdocstrings = "^0.30.1"
+mkdocstrings-python = "^1.18.2"
 
 [tool.pytest.ini_options]
 norecursedirs = ["tmp", ]

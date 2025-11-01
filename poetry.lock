@@ -886,7 +886,6 @@ Markdown = ">=3.6"
 MarkupSafe = ">=1.1"
 mkdocs = ">=1.6"
 mkdocs-autorefs = ">=1.4"
-mkdocstrings-python = {version = ">=1.16.2", optional = true, markers = "extra == \"python\""}
 pymdown-extensions = ">=6.3"
 
 [package.extras]
@@ -1676,4 +1675,4 @@ tomli = {version = ">=2.0.1", markers = "python_version < \"3.11\""}
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10, <4"
-content-hash = "e6dacb34b879bbe22825fe08628c74b8f68edd6e9a8f2b03407d2cdcf5d66eac"
+content-hash = "04e20fe666a081341c486ba8256fe189814703c657e5780e6cb620ef7ebba685"
