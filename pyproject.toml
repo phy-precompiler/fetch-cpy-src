@@ -17,7 +17,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/phy-precompiler/fetch-cpy-src"
-# Documentation = "https://readthedocs.org"
+Documentation = "https://fetch-cpy-src.readthedocs.io"
 Repository = "https://github.com/phy-precompiler/fetch-cpy-src"
 Issues = "https://github.com/phy-precompiler/fetch-cpy-src/issues"
 
