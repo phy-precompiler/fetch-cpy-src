@@ -9,7 +9,7 @@ import click
 from fetch_cpy_src.manifest import Manifest
 
 
-@click.group()
+@click.group(name='fetch-cpy-src')
 def cli_app():
     """ group all sub commands """
     pass
