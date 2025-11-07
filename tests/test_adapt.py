@@ -1,14 +1,14 @@
-# pylint: disable=missing-function-docstring,unused-import
 """ test `fetch_cpy_src/adapter.py` """
-# imports
+# pylint: disable=missing-function-docstring
+
+# imports; pylint: disable=unused-import
 from pathlib import Path
 from pprint import pprint
 
 import pytest
 
 # local imports
-from fetch_cpy_src.adapter import ModAbsImportAdapter, \
-    TopLevelScriptImportAdapter, AddDunderInitAdapter
+from fetch_cpy_src.adapter import ModAbsImportAdapter, TopLevelScriptImportAdapter, AddDunderInitAdapter
 from fetch_cpy_src.manifest import Manifest
 from tests._common import SRC_DIR, TMP_DIR
 

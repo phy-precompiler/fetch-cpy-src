@@ -1,11 +1,11 @@
-# pylint: disable=missing-function-docstring,unused-import
 """ test `fetch_cpy_src/downloader.py` """
-# imports
+# pylint: disable=missing-function-docstring,unused-import
+
+# imports; pylint: disable=unused-import
 import pytest
 
 # local imports
-from fetch_cpy_src.downloader import _get_cpython_repo, \
-    _download_cpython_file, _download_cpython_dir
+from fetch_cpy_src.downloader import _get_cpython_repo, _download_cpython_file, _download_cpython_dir
 from tests._common import TEST_DIR, TMP_DIR
 
 
