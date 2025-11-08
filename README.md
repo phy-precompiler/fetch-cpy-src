@@ -1,5 +1,24 @@
 # Fetch selected part of cpython source repository.
 
+<p align="left">
+  <!-- PyPI Version -->
+  <a href="https://pypi.org/project/fetch-cpy-src/">
+    <img alt="PyPI" src="https://img.shields.io/pypi/v/fetch-cpy-src.svg">
+  </a>
+  <!-- Supported Python Versions -->
+  <a href="https://pypi.org/project/fetch-cpy-src/">
+    <img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/fetch-cpy-src.svg">
+  </a>
+  <!-- GitHub Actions -->
+  <a href="https://github.com/phy-precompiler/fetch-cpy-src/blob/main/.github/workflows/python-publish.yml">
+    <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/phy-precompiler/fetch-cpy-src/python-publish.yml?branch=main">
+  </a>
+  <!-- License -->
+  <a href="https://github.com/phy-precompiler/fetch-cpy-src/blob/main/LICENSE">
+    <img alt="License" src="https://img.shields.io/github/license/phy-precompiler/fetch-cpy-src.svg">
+  </a>
+</p>
+
 This project is part of [`phy`](https://github.com/phy-precompiler).
 
 ## Install
