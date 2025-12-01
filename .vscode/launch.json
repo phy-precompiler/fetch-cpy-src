@@ -10,5 +10,14 @@
                 "-s"
             ],
         },
+        {
+            "name": "CLI help",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "fetch_cpy_src",
+            "args": [
+                "--help"
+            ],
+        },
     ],
 }
