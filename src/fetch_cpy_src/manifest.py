@@ -10,7 +10,11 @@ import tomli  # builtin `tomlib` is available until 3.11
 from github.Repository import Repository
 
 # local imports
-from fetch_cpy_src.downloader import _get_cpython_repo, _download_cpython_file, _download_cpython_dir
+from fetch_cpy_src.downloader import (
+    get_cpython_repo, 
+    download_cpython_file, 
+    download_cpython_dir
+)
 from fetch_cpy_src import adapter
 from fetch_cpy_src.adapter import FileAdapter, DirAdapter, Adapter
 
@@ -62,7 +66,7 @@ class Manifest:
         self.work_dir = (work_dir if work_dir else Path.cwd()).resolve()
 
         # read `github_access_token` from env
-        self._cpy_repo = _get_cpython_repo(access_token=github_access_token)
+        self._cpy_repo = get_cpython_repo(access_token=github_access_token)
 
     @classmethod
     def load(cls, toml_file: Path, work_dir: Path = None, github_access_token: Optional[str] = None) -> 'Manifest':
@@ -110,12 +114,12 @@ class Manifest:
         for _item in self.items:
             # for file
             if _item.type == 'file':
-                target_file = _download_cpython_file(self._cpy_repo, _item.path, self.tag, self.work_dir)
+                target_file = download_cpython_file(self._cpy_repo, _item.path, self.tag, self.work_dir)
                 if rename := _item.rename:
                     shutil.move(target_file, self.work_dir / rename)
 
             elif _item.type == 'dir':
-                target_dir = _download_cpython_dir(self._cpy_repo, _item.path, self.tag, self.work_dir)
+                target_dir = download_cpython_dir(self._cpy_repo, _item.path, self.tag, self.work_dir)
                 if rename := _item.rename:
                     shutil.move(target_dir, self.work_dir / rename)
                     shutil.rmtree(self.work_dir / _item.path.split('/')[0])

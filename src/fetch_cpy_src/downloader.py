@@ -12,13 +12,13 @@ CPYTHON_REPO_OWNER = 'python'
 CPYTHON_REPO_NAME = 'cpython'
 
 
-def _get_cpython_repo(access_token: str = None) -> Repository:
+def get_cpython_repo(access_token: str = None) -> Repository:
     """ shared github repository access object """
-    gh = Github(access_token) if access_token else Github()
+    gh = Github(login_or_token=access_token) if access_token else Github()
     return gh.get_repo(f'{CPYTHON_REPO_OWNER}/{CPYTHON_REPO_NAME}')
 
 
-def _download_cpython_file(repo: Repository, path: str, tag: str, target_dir: Path) -> Path:
+def download_cpython_file(repo: Repository, path: str, tag: str, target_dir: Path) -> Path:
     """ download file from cpython repository """
     # if the remote file does not exists, `github.GithubException.UnknownObjectException` would raise
     file_content = repo.get_contents(path, ref=tag)
@@ -36,7 +36,7 @@ def _download_cpython_file(repo: Repository, path: str, tag: str, target_dir: Pa
     return target_path
     
 
-def _download_cpython_dir(repo: Repository, path: str, tag: str, target_dir: Path) -> Path:
+def download_cpython_dir(repo: Repository, path: str, tag: str, target_dir: Path) -> Path:
     """ download all files recursively of a directory from cpython repository """
     # if the remote file does not exists, `github.GithubException.UnknownObjectException` would raise
     dir_content = repo.get_contents(path, ref=tag)
@@ -51,9 +51,9 @@ def _download_cpython_dir(repo: Repository, path: str, tag: str, target_dir: Pat
     # walk the path
     for _sub_content in dir_content:
         if _sub_content.type == 'dir':
-            _download_cpython_dir(repo, _sub_content.path, tag, target_dir)
+            download_cpython_dir(repo, _sub_content.path, tag, target_dir)
 
         else:  # _sub_content.type == 'file'
-            _download_cpython_file(repo, _sub_content.path, tag, target_dir)
+            download_cpython_file(repo, _sub_content.path, tag, target_dir)
 
     return target_path

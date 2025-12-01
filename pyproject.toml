@@ -1,6 +1,6 @@
 [project]
 name = "fetch-cpy-src"
-version = "0.3.1"
+version = "0.1.7"
 description = "Fetch selected part of cpython source repository."
 authors = [
     {name = "Alfred DU",email = "ihearmywords@hotmail.com"}
@@ -9,8 +9,8 @@ readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10, <4"
 dependencies = [
-    "requests (>=2.32.3,<3.0.0)",
     "pygithub (>=2.6.1,<3.0.0)",
+    "requests (>=2.32.3,<3.0.0)",
     "tomli (>=2.2.1,<3.0.0)",
     "typer (>=0.20.0,<0.21.0)",
 ]
@@ -37,10 +37,10 @@ packages = [{include = "fetch_cpy_src", from = "src"}]
 fetch-cpy-src = "fetch_cpy_src.cli:main"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.5"
 mkdocs = "^1.6.1"
 mkdocs-material = "^9.6.22"
-pydoc-markdown = "^4.8.2"
-tox = "^4.32.0"
-pylint = "^4.0.2"
 mypy = "^1.18.2"
+pydoc-markdown = "^4.8.2"
+pylint = "^4.0.2"
+pytest = "^8.3.5"
+tox = "^4.32.0"
