@@ -1,5 +1,5 @@
 """ Fetch selected part of cpython source repository. """
-__version__ = '0.1.7'
+__version__ = '0.1.8'
 __all__ = [
     'fetch_manifest',
 ]
