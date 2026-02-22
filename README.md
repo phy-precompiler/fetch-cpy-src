@@ -120,8 +120,8 @@ pydoc-markdown -I src -m package_name.manifest --render-toc > docs/manifest.md
 
 # Develop
 
-Build the package with `poetry`:
+Build the package with `uv`:
 
 ```shell
-poetry build
+uv build
 ```
