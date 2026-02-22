@@ -6,6 +6,7 @@ __pycache__/
 dist/
 site/
 .tox/
+uv.lock
 
 tests/access_token
 tmp/
